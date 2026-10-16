@@ -5,8 +5,8 @@
   'use strict';
 
   const OWNER = 'Mhd-Azeem';
-  const SIX_HOURS = 6 * 60 * 60 * 1000;
-  const CACHE_KEY = 'az-appverse-public-releases-v1';
+  const FIVE_MINUTES = 5 * 60 * 1000;
+  const CACHE_KEY = 'az-appverse-public-releases-v2';
   const fallback = (repo, tag, date, isPreview, assetNames) => ({
     tag: tag,
     date: date,
@@ -20,15 +20,15 @@
   const apps = [
     {
       id: 'remote', name: 'AZ Remote Connect', repo: 'AZ-RemoteConnect', tone: 'blue',
-      symbol: 'RC', label: 'CONNECTIVITY', category: 'Remote access', filters: ['android', 'windows', 'tools'],
+      symbol: 'RC', icon: './icons/az-remote-connect.jpg', label: 'CONNECTIVITY', category: 'Remote access', filters: ['android', 'windows', 'tools'],
       short: 'Remote access that makes your devices feel closer, wherever you are.',
       description: 'An evolving remote connectivity app for viewing and controlling a Windows computer from an Android phone, with multi-platform builds.',
       features: ['Remote screen viewing', 'Android controller', 'Windows host', 'Touchpad control'],
-      release: fallback('AZ-RemoteConnect', 'v0.4.0-blue-dashboard.8', '2026-10-16T05:12:54Z', true, ['AZ-RemoteConnect-Viewer-debug.apk', 'AZ-RemoteConnect-Windows-x64.exe'])
+      comingSoon: true
     },
     {
       id: 'music', name: 'AzMusic', repo: 'music-app-azeem', tone: 'purple',
-      symbol: '♫', label: 'AUDIO', category: 'Music player', filters: ['android', 'tools'],
+      symbol: '♫', icon: './icons/azmusic.svg', label: 'AUDIO', category: 'Music player', filters: ['android', 'tools'],
       short: 'A personal music world, designed around the songs you love.',
       description: 'A music listening experience focused on discovery, artists, playlists and an expressive player interface.',
       features: ['Music discovery', 'Artists and playlists', 'Personal listening', 'Android player'],
@@ -36,7 +36,7 @@
     },
     {
       id: 'attendance', name: 'School Attendance', repo: 'School-Attendance', tone: 'cyan',
-      symbol: 'SA', label: 'EDUCATION', category: 'School management', filters: ['android', 'education', 'tools'],
+      symbol: 'SA', icon: './icons/school-attendance.svg', label: 'EDUCATION', category: 'School management', filters: ['android', 'education', 'tools'],
       short: 'Make school attendance faster, clearer, and easier to manage.',
       description: 'A digital attendance system with an Android app, reporting workflows and school administration features.',
       features: ['Attendance tracking', 'Reporting', 'School workflow', 'Signed Android build'],
@@ -44,7 +44,7 @@
     },
     {
       id: 'car', name: 'AZ Car 3D', repo: 'WebToApp', tone: 'orange',
-      symbol: '3D', label: 'GAMING', category: 'Driving game', filters: ['android', 'windows', 'games'],
+      symbol: '3D', icon: './icons/az-car-3d.svg', label: 'GAMING', category: 'Driving game', filters: ['android', 'windows', 'games'],
       releaseFilter: 'car',
       short: 'Take the wheel in a driving world inspired by Sri Lankan roads.',
       description: 'An experimental open-world driving game project featuring Akurana and both Android and Windows builds.',
@@ -53,53 +53,12 @@
     },
     {
       id: 'jarvis', name: 'Jarvis', repo: 'Jarvis', tone: 'teal',
-      symbol: 'J', label: 'UTILITY', category: 'Productivity tool', filters: ['android', 'windows', 'tools'],
+      symbol: 'J', icon: './icons/jarvis.svg', label: 'UTILITY', category: 'Productivity tool', filters: ['android', 'windows', 'tools'],
       short: 'A cross-device software experiment for smarter everyday workflows.',
       description: 'A personal software project with downloadable Android and Windows releases and update-focused builds.',
       features: ['Android app', 'Windows app', 'Release updates', 'Cross-platform project'],
       release: fallback('Jarvis', 'build-21', '2026-09-12T17:20:44Z', false, ['Jarvis-installable.apk', 'Jarvis-Windows.exe'])
     },
-    {
-      id: 'neon', name: 'Neon Coast', repo: 'games', tone: 'pink',
-      symbol: 'NC', label: 'GAMING', category: 'Arcade game', filters: ['android', 'windows', 'games'],
-      releaseFilter: 'coast',
-      short: 'Neon-lit gaming energy, packaged for Android and Windows.',
-      description: 'A game prototype from the AZ games collection, distributed as Android and Windows test builds.',
-      features: ['Game prototype', 'Android build', 'Windows build', 'Preview release'],
-      release: fallback('games', 'coast-build-2', '2026-09-20T19:57:05Z', true, ['NeonCoast.apk', 'NeonCoast.exe'])
-    },
-    {
-      id: 'editor', name: "Azeem's Editor", repo: 'Photoeditor', tone: 'indigo',
-      symbol: 'ED', label: 'CREATIVE', category: 'Photo editor', filters: ['android', 'tools'],
-      short: 'Creative tools for turning everyday photos into something new.',
-      description: 'A mobile photo-editing application project with a published Android APK.',
-      features: ['Image editing', 'Mobile creative tools', 'Android APK', 'Photo workflows'],
-      release: fallback('Photoeditor', 'latest', '2026-09-16T12:59:22Z', false, ['Azeems-Editor.apk'])
-    },
-    {
-      id: 'maestro', name: 'Team Maestro Exam', repo: 'team-maestro', tone: 'green',
-      symbol: 'TM', label: 'EDUCATION', category: 'Exam tool', filters: ['android', 'education'],
-      short: 'A digital companion for learning, practice and exam workflows.',
-      description: 'An education-focused examination application with public Android release packages.',
-      features: ['Exam workflows', 'Education tools', 'Android release', 'Student-focused'],
-      release: fallback('team-maestro', 'v1.1.0', '2026-07-10T07:18:25Z', false, ['TeamMaestroExam-v1.1.0.apk'])
-    },
-    {
-      id: 'launcher', name: 'AZ Launcher', repo: 'AZ-Launcher', tone: 'indigo',
-      symbol: 'AZ', label: 'PERSONALIZATION', category: 'Android launcher', filters: ['android', 'tools'],
-      short: 'A customizable Android home screen with its own AZ design language.',
-      description: 'A launcher project focused on personalization, panels, gestures, widgets and a distinctive Android interface.',
-      features: ['Home screen design', 'Widgets', 'Personalization', 'Android 15 focus'],
-      private: true
-    },
-    {
-      id: 'webtoapp', name: 'WebToApp Builder', repo: 'WebToApp', tone: 'blue',
-      symbol: '</>', label: 'DEVELOPER TOOLS', category: 'App builder', filters: ['android', 'tools'],
-      short: 'Convert websites into Android app projects, from an idea to a build.',
-      description: 'The original website-to-Android app builder source project. No public standalone WebToApp download has been verified yet.',
-      features: ['Web-to-Android project', 'GitHub-based development', 'Developer tools', 'Source repository'],
-      sourceOnly: true
-    }
   ];
 
   var filter = 'all';
@@ -131,7 +90,7 @@
     return '';
   }
   function downloadsFor(app) {
-    if (!app.release || app.private || app.sourceOnly) return [];
+    if (app.comingSoon || !app.release || app.private || app.sourceOnly) return [];
     var files = app.release.assets.filter(function (file) { return platformOf(file) && githubUrl(file.url); });
     var platforms = ['Android', 'Windows'];
     return platforms.map(function (platform) {
@@ -154,6 +113,7 @@
     return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
   function labelFor(app) {
+    if (app.comingSoon) return '<span class="release-label coming-soon">Coming soon</span>';
     if (app.private) return '<span class="release-label locked">Private</span>';
     if (app.sourceOnly) return '<span class="release-label locked">Source only</span>';
     if (!app.release) return '<span class="release-label locked">No release</span>';
@@ -169,7 +129,9 @@
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M4 17v4h16v-4"/></svg>' + escapeHTML(d.platform) + '</a>';
     }).join('');
     if (!actions) {
-      if (app.sourceOnly) {
+      if (app.comingSoon) {
+        actions = '<button class="card-source-action coming-soon-action" type="button" data-details="' + escapeHTML(app.id) + '">Coming soon · View details ↗</button>';
+      } else if (app.sourceOnly) {
         actions = '<a class="card-source-action" target="_blank" rel="noopener noreferrer" href="' + escapeHTML(githubUrl('https://github.com/' + OWNER + '/' + app.repo)) + '">View source repository ↗</a>';
       } else {
         actions = '<button class="card-source-action" type="button" data-details="' + escapeHTML(app.id) + '">View project details ↗</button>';
@@ -179,7 +141,7 @@
     }
     return '<article class="app-card" aria-label="' + escapeHTML(app.name) + '">' +
       '<div class="app-poster tone-' + escapeHTML(app.tone) + '"><span class="poster-topline">AZ / ' + String(index + 1).padStart(2, '0') + '</span>' +
-      '<span class="poster-symbol" aria-hidden="true">' + escapeHTML(app.symbol) + '</span><span class="poster-flare" aria-hidden="true"></span>' +
+      '<span class="poster-icon-wrap" aria-hidden="true"><span class="poster-symbol-fallback">' + escapeHTML(app.symbol) + '</span><img class="poster-icon" alt="" loading="lazy" src="' + escapeHTML(app.icon) + '"></span><span class="poster-flare" aria-hidden="true"></span>' +
       '<span class="poster-bottomline">' + escapeHTML(app.label) + ' ↗</span></div>' +
       '<div class="card-body"><div class="card-overline"><span class="category-label">' + escapeHTML(app.category) + '</span>' + labelFor(app) + '</div>' +
       '<h3 class="card-title">' + escapeHTML(app.name) + '</h3><p class="card-desc">' + escapeHTML(app.short) + '</p>' +
@@ -206,16 +168,16 @@
   }
   function modalHtml(app) {
     var downloads = downloadsFor(app);
-    var meta = app.release ?
+    var meta = app.comingSoon ? '<div class="release-box"><div class="release-box-top"><span>Coming soon</span>' + labelFor(app) + '</div><p>Public downloads are not available yet. Watch this space for the launch.</p></div>' : app.release ?
       '<div class="release-box"><div class="release-box-top"><span>' + escapeHTML(app.release.tag) + '</span>' + labelFor(app) + '</div><p>Published ' + escapeHTML(dateText(app.release.date)) + ' · Original files on GitHub Releases</p></div>' :
       '<div class="release-box"><div class="release-box-top"><span>' + (app.private ? 'Private repository' : 'Source available') + '</span>' + labelFor(app) + '</div><p>' + (app.private ? 'Public downloads are not available from this private repository.' : 'No public standalone app download has been verified for this project.') + '</p></div>';
     var btns = downloads.map(function (d) {
       return '<a target="_blank" rel="noopener noreferrer" href="' + escapeHTML(githubUrl(d.file.url)) + '"><span>↓ ' + escapeHTML(d.platform) +
         '<br><small>' + escapeHTML(d.file.name) + '</small></span><span>↗</span></a>';
     }).join('');
-    var status = app.private ? '<p class="modal-locked">This GitHub repository is private. Visitors need a public release download before this app can be installed from the website.</p>' :
+    var status = app.comingSoon ? '<p class="modal-note">AZ Remote Connect is in development. Downloads will be added after its public launch.</p>' : app.private ? '<p class="modal-locked">This GitHub repository is private. Visitors need a public release download before this app can be installed from the website.</p>' :
       app.sourceOnly ? '<p class="modal-locked">This project has public source code, but no verified standalone WebToApp download yet.</p>' : '';
-    return '<div class="modal-icon">' + escapeHTML(app.symbol) + '</div>' +
+    return '<div class="modal-icon"><span>' + escapeHTML(app.symbol) + '</span><img class="modal-icon-img" src="' + escapeHTML(app.icon) + '" alt=""></div>' +
       '<span class="modal-eyebrow">' + escapeHTML(app.label) + ' / AZ APPVERSE</span>' +
       '<h2 id="modal-title">' + escapeHTML(app.name) + '</h2>' +
       '<p class="modal-summary">' + escapeHTML(app.description) + '</p>' +
@@ -225,7 +187,7 @@
       (btns ? '<div class="modal-heading">AVAILABLE DOWNLOADS</div><div class="modal-downloads">' + btns + '</div>' +
         '<p class="modal-note">' + (app.release.prerelease ? 'This is a preview build and may be unstable. ' : '') +
         'Android APKs require Android installation permission; Windows files must be opened on a compatible PC.</p>' : '') +
-      (!app.private ? '<a class="modal-source-link" href="' + escapeHTML(githubUrl('https://github.com/' + OWNER + '/' + app.repo)) +
+      (!app.private && !app.comingSoon ? '<a class="modal-source-link" href="' + escapeHTML(githubUrl('https://github.com/' + OWNER + '/' + app.repo)) +
         '" target="_blank" rel="noopener noreferrer">View project on GitHub <span>↗</span></a>' : '');
   }
   function openModal(id) {
@@ -260,8 +222,11 @@
   function extractRelease(app, data) {
     if (!Array.isArray(data)) return null;
     var candidates = data.filter(function (release) { return relevantRelease(app, release); });
-    candidates.sort(function (a, b) { return new Date(b.published_at || 0).getTime() - new Date(a.published_at || 0).getTime(); });
-    var release = candidates[0];
+    // Prefer a production release so a preview cannot silently replace stable downloads.
+    var stable = candidates.filter(function (r) { return !r.prerelease; });
+    var pool = stable.length ? stable : candidates;
+    pool.sort(function (a, b) { return new Date(b.published_at || 0).getTime() - new Date(a.published_at || 0).getTime(); });
+    var release = pool[0];
     if (!release) return null;
     var assets = release.assets.map(function (a) { return { name: a.name, url: a.browser_download_url }; })
       .filter(function (a) { return !!platformOf(a) && !!githubUrl(a.url); });
@@ -276,18 +241,21 @@
   }
   async function refreshReleases() {
     var cached = getCached();
-    if (cached && cached.values && cached.time && Date.now() - cached.time < SIX_HOURS) {
+    if (cached && cached.values && cached.time) {
       apps.forEach(function (a) { if (cached.values[a.id]) a.release = cached.values[a.id]; });
-      sourceStatus = 'Release data cached · refreshes every 6h';
-      render();
-      return;
+      if (Date.now() - cached.time < FIVE_MINUTES) {
+        sourceStatus = 'Auto-updated · checks every 5 minutes';
+        render();
+        return;
+      }
     }
-    var publicApps = apps.filter(function (a) { return !a.private && !a.sourceOnly; });
+
+    var publicApps = apps.filter(function (a) { return !a.comingSoon && !a.private && !a.sourceOnly; });
     var updated = {};
     var synced = 0;
     await Promise.all(publicApps.map(async function (app) {
       try {
-        var response = await fetch('https://api.github.com/repos/' + OWNER + '/' + app.repo + '/releases?per_page=50', {
+        var response = await fetch('https://api.github.com/repos/' + OWNER + '/' + app.repo + '/releases?per_page=100', {
           headers: { Accept: 'application/vnd.github+json' },
           signal: AbortSignal.timeout ? AbortSignal.timeout(9000) : undefined
         });
@@ -298,10 +266,10 @@
       if (app.release) updated[app.id] = app.release;
     }));
     if (synced) {
-      sourceStatus = synced === publicApps.length ? 'Live GitHub release data' : 'Live + verified GitHub releases';
+      sourceStatus = synced === publicApps.length ? 'Auto-updated from GitHub Releases' : 'GitHub releases · backup links available';
       setCached(updated);
     } else {
-      sourceStatus = 'Verified release links · live check unavailable';
+      sourceStatus = 'Verified release links · GitHub check unavailable';
     }
     render();
   }
@@ -339,6 +307,12 @@
     render();
     document.getElementById('app-search').focus();
   });
+  grid.addEventListener('error', function (e) {
+    if (e.target.classList.contains('poster-icon')) e.target.classList.add('is-broken');
+  }, true);
+  modal.addEventListener('error', function (e) {
+    if (e.target.classList.contains('modal-icon-img')) e.target.classList.add('is-broken');
+  }, true);
   grid.addEventListener('click', function (e) {
     var detail = e.target.closest('[data-details]');
     if (detail) openModal(detail.getAttribute('data-details'));
