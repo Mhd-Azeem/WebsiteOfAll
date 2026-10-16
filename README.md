@@ -17,7 +17,7 @@ The website intentionally does not display Team Maestro, WebToApp Builder, AZ La
 ## How automatic release updates work
 
 - The public website calls the GitHub Releases API for each downloadable project's source repository.
-- It selects the **newest stable release with an APK or Windows EXE/ZIP**, or the latest prerelease if no stable release is available. A prerelease won't silently supersede an existing stable download.
+- It independently selects the **newest stable Android APK** and the **newest stable Windows EXE/ZIP**, including when those files belong to different releases. If no stable build exists for a platform, the latest prerelease for that platform is used. A prerelease won't silently supersede an existing stable download.
 - For AZ Car 3D, only car-related releases are considered from the shared WebToApp repository. This prevents WebToApp release assets from appearing as AZ Car downloads.
 - The app-card download buttons, detail modal, visible release tag, and published date update automatically on the page after the GitHub API call succeeds.
 - Successful metadata is cached in each visitor's browser for at most **five minutes**. Refresh the page after that interval to fetch new releases. It is not a background push notification.
