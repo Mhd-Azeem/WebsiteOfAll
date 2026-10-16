@@ -1,50 +1,50 @@
 # AZ Appverse
 
-**Website for AZ software projects by Azeem.** A responsive, dark-blue, technology-themed app showcase.
+Responsive, dark-blue app showcase for software made by Azeem.
 
-## Live website
+**Public website:** https://mhd-azeem.github.io/WebsiteOfAll/
 
-After enabling GitHub Pages, open: **https://mhd-azeem.github.io/WebsiteOfAll/**
+## Published catalog
 
-The repository name is WebsiteOfAll, so its Pages URL includes /WebsiteOfAll/.
+1. AZ Remote Connect — **Coming Soon** (no public download buttons).
+2. AzMusic — Android APK.
+3. School Attendance — Android APK.
+4. AZ Car 3D — Android APK and Windows release bundle.
+5. Jarvis — Android APK and Windows EXE.
 
-## Publish (one-time setup)
+The website intentionally does not display Team Maestro, WebToApp Builder, AZ Launcher, Azeem's Editor, or Neon Coast. Do not re-add these without approval.
 
-1. Open this repository on GitHub.
-2. Go to **Settings → Pages**.
-3. Under **Build and deployment**, set **Source** to **Deploy from a branch**.
-4. Select **main** and **/(root)**, then **Save**.
-5. Wait for the site to show as published, then open the URL above.
+## How automatic release updates work
 
-## Features
+- The public website calls the GitHub Releases API for each downloadable project's source repository.
+- It selects the **newest stable release with an APK or Windows EXE/ZIP**, or the latest prerelease if no stable release is available. A prerelease won't silently supersede an existing stable download.
+- For AZ Car 3D, only car-related releases are considered from the shared WebToApp repository. This prevents WebToApp release assets from appearing as AZ Car downloads.
+- The app-card download buttons, detail modal, visible release tag, and published date update automatically on the page after the GitHub API call succeeds.
+- Successful metadata is cached in each visitor's browser for at most **five minutes**. Refresh the page after that interval to fetch new releases. It is not a background push notification.
+- If GitHub's public API is unavailable or rate-limited, the last cached result or verified fallback links remain visible. That may delay a newly released build for affected visitors until their next successful refresh.
+- A release must be **public and have the correct downloadable asset** (e.g. APK, Windows EXE, or Windows ZIP) to appear. A GitHub Actions build artifact without a release is not sufficient.
+- No redeployment or manual website code edit is normally needed to show a new published release. The original versioned fallback links can be updated occasionally for offline reliability.
 
-- Responsive blue-glass design for phones, tablets, and desktops.
-- Search, filter, and sort across 10 projects.
-- Verified fallback download links directly to published GitHub Release assets.
-- Dynamic release checking via the public GitHub REST API (app.js), cached in the browser for six hours; fallback links remain visible if the API is rate-limited or unavailable.
-- App details, release status, publication dates, and platform-specific downloads.
-- Accurate labels for preview builds, private projects, and source-only projects.
-- No backend, accounts, analytics, or paid hosting required.
+**Important:** These checks update the **website's displayed download links**, not the installed Android or Windows apps. Apps need their own update-checking logic to install future builds.
 
-## Private and source-only projects
+## App icons
 
-- AZ Launcher is currently private. Public visitors cannot download releases from the private repository. Its card displays no public download link. Make a release publicly accessible before adding a link.
-- WebToApp Builder currently has a public source repository but no independently verified standalone WebToApp release. It is source-only. The same repository contains AZ Car 3D release files; the website treats that game as a separate project.
-- Preview/debug releases may be unstable; always test binaries before public distribution.
-- Revisit fallback release versions after new published releases if you want accurate fallback links for visitors whose GitHub API requests fail.
+- `icons/az-remote-connect.jpg` — original AZ Remote Connect artwork from its branding source.
+- `icons/azmusic.svg` — SVG adapted from AzMusic's classic Android launcher vector.
+- `icons/school-attendance.svg` — original School Attendance public web icon.
+- `icons/az-car-3d.svg` — original AZ Car 3D Godot project icon.
+- `icons/jarvis.svg` — custom website icon (no original source icon identified).
 
-## Add an application
+Icons live directly in this repository and do not rely on the source repositories remaining publicly accessible. CSS letter-symbol fallbacks appear if an icon does not load.
 
-1. Open app.js.
-2. Add a definition to the apps array with a name, repo, filters, details, features and verified fallback release if available.
-3. For repositories hosting multiple apps, extend relevantRelease filtering to avoid cross-linking releases.
-4. Commit to main; GitHub Pages will redeploy automatically once enabled.
+## Maintain the catalog
 
-## Repository files
+- Edit `app.js` to change app titles, descriptions, filters or icon paths.
+- For an app moved to a new GitHub repository, update its `repo` and `fallback(...)` values.
+- To launch Remote Connect later, remove its `comingSoon` property and add a verified release fallback.
+- If multiple applications share a source repository, add a release filter to `relevantRelease()`.
+- Check Pages under **Settings → Pages**; deployment source should be `main` with `/(root)`.
 
-- index.html — structure and SEO metadata.
-- styles.css — futuristic blue responsive interface.
-- app.js — catalog, filters, release refresh and application details.
-- favicon.svg and og-cover.svg — project branding.
+## Technology
 
-Built with HTML, CSS and vanilla JavaScript. No build step is necessary.
+Pure HTML (`index.html`), CSS (`styles.css`), SVG/JPEG assets, and vanilla JavaScript (`app.js`). The site runs on GitHub Pages without a build step, backend or paid hosting.
