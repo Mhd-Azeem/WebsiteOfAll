@@ -6,7 +6,7 @@
 
   const OWNER = 'Mhd-Azeem';
   const FIVE_MINUTES = 5 * 60 * 1000;
-  const CACHE_KEY = 'az-appverse-public-releases-v2';
+  const CACHE_KEY = 'az-appverse-public-releases-v3';
   const fallback = (repo, tag, date, isPreview, assetNames) => ({
     tag: tag,
     date: date,
@@ -149,7 +149,10 @@
   }
   function render() {
     var list = apps.filter(function (app) {
-      if (filter !== 'all' && app.filters.indexOf(filter) < 0) return false;
+      if (filter !== 'all' && app.filters.indexOf(filter) < 0) {
+        if (filter !== 'android' && filter !== 'windows') return false;
+        if (!downloadsFor(app).some(function (d) { return d.platform.toLowerCase() === filter; })) return false;
+      }
       var haystack = [app.name, app.short, app.category, app.label, app.description, app.features.join(' ')].join(' ').toLowerCase();
       return !search || haystack.includes(search);
     });
@@ -173,7 +176,7 @@
       '<div class="release-box"><div class="release-box-top"><span>' + (app.private ? 'Private repository' : 'Source available') + '</span>' + labelFor(app) + '</div><p>' + (app.private ? 'Public downloads are not available from this private repository.' : 'No public standalone app download has been verified for this project.') + '</p></div>';
     var btns = downloads.map(function (d) {
       return '<a target="_blank" rel="noopener noreferrer" href="' + escapeHTML(githubUrl(d.file.url)) + '"><span>↓ ' + escapeHTML(d.platform) +
-        '<br><small>' + escapeHTML(d.file.name) + '</small></span><span>↗</span></a>';
+        '<br><small>' + escapeHTML(d.file.name) + (d.file.tag ? ' · ' + escapeHTML(d.file.tag) : '') + '</small></span><span>↗</span></a>';
     }).join('');
     var status = app.comingSoon ? '<p class="modal-note">AZ Remote Connect is in development. Downloads will be added after its public launch.</p>' : app.private ? '<p class="modal-locked">This GitHub repository is private. Visitors need a public release download before this app can be installed from the website.</p>' :
       app.sourceOnly ? '<p class="modal-locked">This project has public source code, but no verified standalone WebToApp download yet.</p>' : '';
@@ -222,20 +225,43 @@
   function extractRelease(app, data) {
     if (!Array.isArray(data)) return null;
     var candidates = data.filter(function (release) { return relevantRelease(app, release); });
-    // Prefer a production release so a preview cannot silently replace stable downloads.
-    var stable = candidates.filter(function (r) { return !r.prerelease; });
-    var pool = stable.length ? stable : candidates;
-    pool.sort(function (a, b) { return new Date(b.published_at || 0).getTime() - new Date(a.published_at || 0).getTime(); });
-    var release = pool[0];
-    if (!release) return null;
-    var assets = release.assets.map(function (a) { return { name: a.name, url: a.browser_download_url }; })
-      .filter(function (a) { return !!platformOf(a) && !!githubUrl(a.url); });
-    if (!assets.length) return null;
+    // Resolve each platform independently: an APK-only update must not hide a
+    // previous Windows build, and vice versa. Prefer stable files for each.
+    var selected = ['Android', 'Windows'].map(function (platform) {
+      var matching = candidates.filter(function (release) {
+        return release.assets.some(function (asset) {
+          return platformOf(asset) === platform && githubUrl(asset.browser_download_url);
+        });
+      });
+      var stable = matching.filter(function (r) { return !r.prerelease; });
+      var pool = stable.length ? stable : matching;
+      pool.sort(function (a, b) {
+        return new Date(b.published_at || 0).getTime() - new Date(a.published_at || 0).getTime();
+      });
+      return pool[0] ? { platform: platform, release: pool[0] } : null;
+    }).filter(Boolean);
+    if (!selected.length) return null;
+    var assets = [];
+    selected.forEach(function (item) {
+      item.release.assets.forEach(function (a) {
+        if (platformOf(a) !== item.platform || !githubUrl(a.browser_download_url)) return;
+        assets.push({
+          name: a.name,
+          url: a.browser_download_url,
+          tag: item.release.tag_name,
+          prerelease: !!item.release.prerelease
+        });
+      });
+    });
+    selected.sort(function (a, b) {
+      return new Date(b.release.published_at || 0).getTime() - new Date(a.release.published_at || 0).getTime();
+    });
+    var lead = selected[0].release;
     return {
-      tag: release.tag_name,
-      date: release.published_at,
-      prerelease: !!release.prerelease,
-      releaseUrl: githubUrl(release.html_url || ''),
+      tag: lead.tag_name,
+      date: lead.published_at,
+      prerelease: selected.some(function (item) { return item.release.prerelease; }),
+      releaseUrl: githubUrl(lead.html_url || ''),
       assets: assets
     };
   }
