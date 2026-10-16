@@ -35,12 +35,28 @@
       release: fallback('music-app-azeem', 'latest', '2026-07-05T19:53:17Z', false, ['AzMusic.apk'])
     },
     {
-      id: 'attendance', name: 'School Attendance', repo: 'School-Attendance', tone: 'cyan',
+      id: 'attendance', name: 'ZCM School Attendance', repo: 'School-Attendance', tone: 'cyan',
       symbol: 'SA', icon: './icons/school-attendance.svg', label: 'EDUCATION', category: 'School management', filters: ['android', 'education', 'tools'],
       short: 'Make school attendance faster, clearer, and easier to manage.',
       description: 'A digital attendance system with an Android app, reporting workflows and school administration features.',
       features: ['Attendance tracking', 'Reporting', 'School workflow', 'Signed Android build'],
       release: fallback('School-Attendance', 'apk-v0.2.279-build-279', '2026-10-07T06:34:31Z', false, ['School-Attendance-INSTALL.apk'])
+    },
+    {
+      id: 'maestro', name: 'Team Maestro', repo: 'team-maestro', tone: 'blue',
+      symbol: 'TM', icon: './icons/team-maestro.svg', label: 'EDUCATION', category: 'Exam preparation', filters: ['android', 'education', 'tools'],
+      short: 'A focused companion for learning and exam preparation.',
+      description: 'Team Maestro Exam is an Android app for a streamlined student exam and study experience.',
+      features: ['Exam preparation', 'Student-focused tools', 'Android app', 'Release updates'],
+      release: fallback('team-maestro', 'v1.1.0', '2026-07-10T07:18:25Z', false, ['TeamMaestroExam-v1.1.0.apk'])
+    },
+    {
+      id: 'universal-attendance', name: 'Universal School Attendance', repo: 'iOS-team-maestro', tone: 'cyan',
+      symbol: 'UA', icon: './icons/universal-attendance.svg', label: 'EDUCATION', category: 'Multi-school management', filters: ['android', 'education', 'tools'],
+      short: 'Attendance management designed for multiple schools in one platform.',
+      description: 'An evolving universal school attendance platform with multi-school support, reports, offline workflows and role-based administration.',
+      features: ['Multi-school support', 'Attendance reports', 'Offline workflows', 'Role-based management'],
+      comingSoon: true
     },
     {
       id: 'car', name: 'AZ Car 3D', repo: 'WebToApp', tone: 'orange',
@@ -55,9 +71,9 @@
       id: 'jarvis', name: 'Jarvis', repo: 'Jarvis', tone: 'teal',
       symbol: 'J', icon: './icons/jarvis.svg', label: 'UTILITY', category: 'Productivity tool', filters: ['android', 'windows', 'tools'],
       short: 'A cross-device software experiment for smarter everyday workflows.',
-      description: 'A personal software project with downloadable Android and Windows releases and update-focused builds.',
+      description: 'A personal cross-device productivity assistant currently being prepared for public launch.',
       features: ['Android app', 'Windows app', 'Release updates', 'Cross-platform project'],
-      release: fallback('Jarvis', 'build-21', '2026-09-12T17:20:44Z', false, ['Jarvis-installable.apk', 'Jarvis-Windows.exe'])
+      comingSoon: true
     },
   ];
 
@@ -122,7 +138,7 @@
   function cardFor(app, index) {
     var options = downloadsFor(app);
     var pills = options.map(function (d) { return '<span class="platform-pill">' + escapeHTML(d.platform) + '</span>'; }).join('');
-    if (!pills) pills = '<span class="platform-pill unavailable">' + (app.private ? 'Private project' : 'Source project') + '</span>';
+    if (!pills) pills = '<span class="platform-pill unavailable">' + (app.comingSoon ? 'Not yet available' : app.private ? 'Private project' : 'Source project') + '</span>';
     var actions = options.map(function (d, n) {
       return '<a class="download-action' + (n > 0 ? ' is-secondary' : '') + '" href="' + escapeHTML(githubUrl(d.file.url)) +
         '" target="_blank" rel="noopener noreferrer" aria-label="Download ' + escapeHTML(app.name + ' for ' + d.platform) + '">' +
@@ -178,7 +194,7 @@
       return '<a target="_blank" rel="noopener noreferrer" href="' + escapeHTML(githubUrl(d.file.url)) + '"><span>↓ ' + escapeHTML(d.platform) +
         '<br><small>' + escapeHTML(d.file.name) + (d.file.tag ? ' · ' + escapeHTML(d.file.tag) : '') + '</small></span><span>↗</span></a>';
     }).join('');
-    var status = app.comingSoon ? '<p class="modal-note">AZ Remote Connect is in development. Downloads will be added after its public launch.</p>' : app.private ? '<p class="modal-locked">This GitHub repository is private. Visitors need a public release download before this app can be installed from the website.</p>' :
+    var status = app.comingSoon ? '<p class="modal-note">This app is marked coming soon. Downloads are disabled until its public launch.</p>' : app.private ? '<p class="modal-locked">This GitHub repository is private. Visitors need a public release download before this app can be installed from the website.</p>' :
       app.sourceOnly ? '<p class="modal-locked">This project has public source code, but no verified standalone WebToApp download yet.</p>' : '';
     return '<div class="modal-icon"><span>' + escapeHTML(app.symbol) + '</span><img class="modal-icon-img" src="' + escapeHTML(app.icon) + '" alt=""></div>' +
       '<span class="modal-eyebrow">' + escapeHTML(app.label) + ' / AZ APPVERSE</span>' +
@@ -268,7 +284,7 @@
   async function refreshReleases() {
     var cached = getCached();
     if (cached && cached.values && cached.time) {
-      apps.forEach(function (a) { if (cached.values[a.id]) a.release = cached.values[a.id]; });
+      apps.forEach(function (a) { if (!a.comingSoon && cached.values[a.id]) a.release = cached.values[a.id]; });
       if (Date.now() - cached.time < FIVE_MINUTES) {
         sourceStatus = 'Auto-updated · checks every 5 minutes';
         render();
