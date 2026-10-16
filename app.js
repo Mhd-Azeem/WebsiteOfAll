@@ -1,6 +1,6 @@
 /* AZ Appverse — public GitHub release catalogue.
    Verified fallback links work even if GitHub's public API is unavailable.
-   Public release metadata is refreshed in the browser, cached for six hours. */
+   Public release metadata is refreshed in the browser, cached for five minutes. */
 (function () {
   'use strict';
 
