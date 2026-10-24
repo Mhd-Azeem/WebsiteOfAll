@@ -59,13 +59,21 @@
       comingSoon: true
     },
     {
-      id: 'car', name: 'AZ Car 3D', repo: 'WebToApp', tone: 'orange',
+      id: 'car-akurana', name: 'AZ Car 3D Akurana', repo: 'WebToApp', tone: 'orange',
       symbol: '3D', icon: './icons/az-car-3d.svg', label: 'GAMING', category: 'Driving game', filters: ['android', 'windows', 'games'],
-      releaseFilter: 'car',
+      releaseFilter: 'akurana',
       short: 'Take the wheel in a driving world inspired by Sri Lankan roads.',
       description: 'An experimental open-world driving game project featuring Akurana and both Android and Windows builds.',
       features: ['3D driving', 'Akurana setting', 'Android build', 'Windows build'],
       release: fallback('WebToApp', 'car3d-akurana', '2026-10-13T04:28:54Z', false, ['AZ-Car-3D-Akurana.apk', 'AZCar3D-Akurana-Windows-x64.zip'])
+    },
+    {
+      id: 'car-colombo', name: 'AZ Car 3D Colombo', repo: 'WebToApp', tone: 'orange',
+      symbol: '3D', icon: './icons/az-car-3d.svg', label: 'GAMING', category: 'Driving game', filters: ['android', 'windows', 'games'],
+      releaseFilter: 'colombo',
+      short: 'Explore a Colombo-inspired driving world.',
+      description: 'The Colombo edition of AZ Car 3D, listed separately from the Akurana edition.',
+      features: ['Colombo setting', '3D driving', 'Android release tracking', 'Windows release tracking']
     },
     {
       id: 'jarvis', name: 'Jarvis', repo: 'Jarvis', tone: 'teal',
@@ -101,7 +109,7 @@
   function platformOf(file) {
     var n = (file.name || '').toLowerCase();
     if (n.endsWith('.apk')) return 'Android';
-    if (n.endsWith('.exe') || n.endsWith('.msi')) return 'Windows';
+    if (n.endsWith('.exe') || n.endsWith('.msi') || n.endsWith('.msix')) return 'Windows';
     if (n.endsWith('.zip') && /windows|win64|win32|x64|x86|desktop/.test(n)) return 'Windows';
     return '';
   }
@@ -138,12 +146,13 @@
   function cardFor(app, index) {
     var options = downloadsFor(app);
     var pills = options.map(function (d) { return '<span class="platform-pill">' + escapeHTML(d.platform) + '</span>'; }).join('');
-    if (!pills) pills = '<span class="platform-pill unavailable">' + (app.comingSoon ? 'Not yet available' : app.private ? 'Private project' : 'Source project') + '</span>';
+    if (!pills) pills = '<span class="platform-pill unavailable">' + (app.comingSoon ? 'Not yet available' : 'No verified download') + '</span>';
     var actions = options.map(function (d, n) {
       return '<a class="download-action' + (n > 0 ? ' is-secondary' : '') + '" href="' + escapeHTML(githubUrl(d.file.url)) +
         '" target="_blank" rel="noopener noreferrer" aria-label="Download ' + escapeHTML(app.name + ' for ' + d.platform) + '">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M4 17v4h16v-4"/></svg>' + escapeHTML(d.platform) + '</a>';
     }).join('');
+    if (app.portalUrl && /^https:\/\//.test(app.portalUrl)) actions += '<a class="download-action is-secondary" href="' + escapeHTML(app.portalUrl) + '" target="_blank" rel="noopener noreferrer">Open web portal ↗</a>';
     if (!actions) {
       if (app.comingSoon) {
         actions = '<button class="card-source-action coming-soon-action" type="button" data-details="' + escapeHTML(app.id) + '">Coming soon · View details ↗</button>';
@@ -194,6 +203,7 @@
       return '<a target="_blank" rel="noopener noreferrer" href="' + escapeHTML(githubUrl(d.file.url)) + '"><span>↓ ' + escapeHTML(d.platform) +
         '<br><small>' + escapeHTML(d.file.name) + (d.file.tag ? ' · ' + escapeHTML(d.file.tag) : '') + '</small></span><span>↗</span></a>';
     }).join('');
+    if (app.portalUrl && /^https:\/\//.test(app.portalUrl)) btns += '<a target="_blank" rel="noopener noreferrer" href="' + escapeHTML(app.portalUrl) + '"><span>↗ Open web portal</span><span>↗</span></a>';
     var status = app.comingSoon ? '<p class="modal-note">This app is marked coming soon. Downloads are disabled until its public launch.</p>' : app.private ? '<p class="modal-locked">This GitHub repository is private. Visitors need a public release download before this app can be installed from the website.</p>' :
       app.sourceOnly ? '<p class="modal-locked">This project has public source code, but no verified standalone WebToApp download yet.</p>' : '';
     return '<div class="modal-icon"><span>' + escapeHTML(app.symbol) + '</span><img class="modal-icon-img" src="' + escapeHTML(app.icon) + '" alt=""></div>' +
@@ -234,7 +244,8 @@
   }
   function relevantRelease(app, release) {
     if (!release || release.draft || !release.assets || !release.assets.length) return false;
-    if (app.releaseFilter === 'car' && !/car3d|azcar|az.car/i.test(release.tag_name + ' ' + release.name)) return false;
+    if (app.releaseFilter === 'akurana' && !/akurana/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' '))) return false;
+    if (app.releaseFilter === 'colombo' && !/colombo/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' '))) return false;
     if (app.releaseFilter === 'coast' && !/coast/i.test(release.tag_name + ' ' + release.name)) return false;
     return release.assets.some(function (asset) { return platformOf({ name: asset.name }); });
   }
