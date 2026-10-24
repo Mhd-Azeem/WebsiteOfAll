@@ -149,7 +149,7 @@
     if (!pills) pills = '<span class="platform-pill unavailable">' + (app.comingSoon ? 'Not yet available' : 'No verified download') + '</span>';
     var actions = options.map(function (d, n) {
       return '<a class="download-action' + (n > 0 ? ' is-secondary' : '') + '" href="' + escapeHTML(githubUrl(d.file.url)) +
-        '" target="_blank" rel="noopener noreferrer" aria-label="Download ' + escapeHTML(app.name + ' for ' + d.platform) + '">' +
+        '" aria-label="Download ' + escapeHTML(app.name + ' for ' + d.platform) + '">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M4 17v4h16v-4"/></svg>' + escapeHTML(d.platform) + '</a>';
     }).join('');
     if (app.portalUrl && /^https:\/\//.test(app.portalUrl)) actions += '<a class="download-action is-secondary" href="' + escapeHTML(app.portalUrl) + '" target="_blank" rel="noopener noreferrer">🌐 Website</a>';
@@ -200,7 +200,7 @@
       '<div class="release-box"><div class="release-box-top"><span>' + escapeHTML(app.release.tag) + '</span>' + labelFor(app) + '</div><p>Published ' + escapeHTML(dateText(app.release.date)) + ' · Original files on GitHub Releases</p></div>' :
       '<div class="release-box"><div class="release-box-top"><span>' + (app.private ? 'Private repository' : 'Source available') + '</span>' + labelFor(app) + '</div><p>' + (app.private ? 'Public downloads are not available from this private repository.' : 'No public standalone app download has been verified for this project.') + '</p></div>';
     var btns = downloads.map(function (d) {
-      return '<a target="_blank" rel="noopener noreferrer" href="' + escapeHTML(githubUrl(d.file.url)) + '"><span>↓ ' + escapeHTML(d.platform) +
+      return '<a href="' + escapeHTML(githubUrl(d.file.url)) + '"><span>↓ ' + escapeHTML(d.platform) +
         '<br><small>' + escapeHTML(d.file.name) + (d.file.tag ? ' · ' + escapeHTML(d.file.tag) : '') + '</small></span><span>↗</span></a>';
     }).join('');
     if (app.portalUrl && /^https:\/\//.test(app.portalUrl)) btns += '<a target="_blank" rel="noopener noreferrer" href="' + escapeHTML(app.portalUrl) + '"><span>🌐 Website</span><span>↗</span></a>';
