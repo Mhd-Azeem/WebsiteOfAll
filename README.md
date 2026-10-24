@@ -6,19 +6,26 @@ Responsive, dark-blue app showcase for software made by Azeem.
 
 ## Published catalog
 
-1. AZ Remote Connect — **Coming Soon** (no public download buttons).
-2. AzMusic — Android APK.
-3. School Attendance — Android APK.
-4. AZ Car 3D — Android APK and Windows release bundle.
-5. Jarvis — Android APK and Windows EXE.
+The live catalog is defined in `app.js` and currently includes eight app cards:
 
-The website intentionally does not display Team Maestro, WebToApp Builder, AZ Launcher, Azeem's Editor, or Neon Coast. Do not re-add these without approval.
+1. AZ Remote Connect — Coming Soon.
+2. AzMusic — Android APK; Windows EXE/MSI/MSIX/ZIP when a verified release exists.
+3. ZCM School Attendance — Android APK; web portal link once a public URL is verified.
+4. Team Maestro — Android APK.
+5. Universal School Attendance — Coming Soon; web/PWA source exists, public portal URL not yet verified.
+6. AZ Car 3D Akurana — Android APK and Windows bundle, tracked independently.
+7. AZ Car 3D Colombo — tracked independently; download shown only when a matching public release exists.
+8. Jarvis — Coming Soon.
+
+Web portal buttons require an explicitly verified HTTPS `portalUrl` in the corresponding app entry. Never guess portal URLs. Windows setup files (.exe, .msi, .msix) and Windows ZIP bundles are recognized from published GitHub Releases.
+
+The website intentionally excludes WebToApp Builder, AZ Launcher, Azeem's Editor, and Neon Coast. Do not re-add these without approval.
 
 ## How automatic release updates work
 
 - The public website calls the GitHub Releases API for each downloadable project's source repository.
 - It independently selects the **newest stable Android APK** and the **newest stable Windows EXE/ZIP**, including when those files belong to different releases. If no stable build exists for a platform, the latest prerelease for that platform is used. A prerelease won't silently supersede an existing stable download.
-- For AZ Car 3D, only car-related releases are considered from the shared WebToApp repository. This prevents WebToApp release assets from appearing as AZ Car downloads.
+- For AZ Car 3D, only releases matching the relevant city (Akurana or Colombo) are considered from the shared WebToApp repository. This prevents WebToApp release assets from appearing as AZ Car downloads.
 - The app-card download buttons, detail modal, visible release tag, and published date update automatically on the page after the GitHub API call succeeds.
 - Successful metadata is cached in each visitor's browser for at most **five minutes**. Refresh the page after that interval to fetch new releases. It is not a background push notification.
 - If GitHub's public API is unavailable or rate-limited, the last cached result or verified fallback links remain visible. That may delay a newly released build for affected visitors until their next successful refresh.
