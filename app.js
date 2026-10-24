@@ -152,7 +152,7 @@
         '" target="_blank" rel="noopener noreferrer" aria-label="Download ' + escapeHTML(app.name + ' for ' + d.platform) + '">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M4 17v4h16v-4"/></svg>' + escapeHTML(d.platform) + '</a>';
     }).join('');
-    if (app.portalUrl && /^https:\/\//.test(app.portalUrl)) actions += '<a class="download-action is-secondary" href="' + escapeHTML(app.portalUrl) + '" target="_blank" rel="noopener noreferrer">Open web portal ↗</a>';
+    if (app.portalUrl && /^https:\/\//.test(app.portalUrl)) actions += '<a class="download-action is-secondary" href="' + escapeHTML(app.portalUrl) + '" target="_blank" rel="noopener noreferrer">🌐 Website</a>';
     if (!actions) {
       if (app.comingSoon) {
         actions = '<button class="card-source-action coming-soon-action" type="button" data-details="' + escapeHTML(app.id) + '">Coming soon · View details ↗</button>';
@@ -203,7 +203,7 @@
       return '<a target="_blank" rel="noopener noreferrer" href="' + escapeHTML(githubUrl(d.file.url)) + '"><span>↓ ' + escapeHTML(d.platform) +
         '<br><small>' + escapeHTML(d.file.name) + (d.file.tag ? ' · ' + escapeHTML(d.file.tag) : '') + '</small></span><span>↗</span></a>';
     }).join('');
-    if (app.portalUrl && /^https:\/\//.test(app.portalUrl)) btns += '<a target="_blank" rel="noopener noreferrer" href="' + escapeHTML(app.portalUrl) + '"><span>↗ Open web portal</span><span>↗</span></a>';
+    if (app.portalUrl && /^https:\/\//.test(app.portalUrl)) btns += '<a target="_blank" rel="noopener noreferrer" href="' + escapeHTML(app.portalUrl) + '"><span>🌐 Website</span><span>↗</span></a>';
     var status = app.comingSoon ? '<p class="modal-note">This app is marked coming soon. Downloads are disabled until its public launch.</p>' : app.private ? '<p class="modal-locked">This GitHub repository is private. Visitors need a public release download before this app can be installed from the website.</p>' :
       app.sourceOnly ? '<p class="modal-locked">This project has public source code, but no verified standalone WebToApp download yet.</p>' : '';
     return '<div class="modal-icon"><span>' + escapeHTML(app.symbol) + '</span><img class="modal-icon-img" src="' + escapeHTML(app.icon) + '" alt=""></div>' +
