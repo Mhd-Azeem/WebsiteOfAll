@@ -70,7 +70,7 @@
     {
       id: 'car-colombo', name: 'AZ Car 3D Colombo', repo: 'WebToApp', tone: 'orange',
       symbol: '3D', icon: './icons/az-car-3d.svg', label: 'GAMING', category: 'Driving game', filters: ['android', 'windows', 'games'],
-      releaseFilter: 'colombo',
+      releaseFilter: 'colombo', comingSoon: true,
       short: 'Explore a Colombo-inspired driving world.',
       description: 'The Colombo edition of AZ Car 3D, listed separately from the Akurana edition.',
       features: ['Colombo setting', '3D driving', 'Android release tracking', 'Windows release tracking']
@@ -244,7 +244,7 @@
   }
   function relevantRelease(app, release) {
     if (!release || release.draft || !release.assets || !release.assets.length) return false;
-    if (app.releaseFilter === 'akurana' && !/akurana/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' '))) return false;
+    if (app.releaseFilter === 'akurana' && !(/akurana/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' ')) || (/car3d|az.car|azcar/i.test(release.tag_name + ' ' + release.name) && !/colombo/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' '))))) return false;
     if (app.releaseFilter === 'colombo' && !/colombo/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' '))) return false;
     if (app.releaseFilter === 'coast' && !/coast/i.test(release.tag_name + ' ' + release.name)) return false;
     return release.assets.some(function (asset) { return platformOf({ name: asset.name }); });
