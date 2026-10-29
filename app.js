@@ -204,7 +204,7 @@
         '<br><small>' + escapeHTML(d.file.name) + (d.file.tag ? ' · ' + escapeHTML(d.file.tag) : '') + '</small></span><span>↗</span></a>';
     }).join('');
     if (app.portalUrl && /^https:\/\//.test(app.portalUrl)) btns += '<a target="_blank" rel="noopener noreferrer" href="' + escapeHTML(app.portalUrl) + '"><span>🌐 Website</span><span>↗</span></a>';
-    var status = app.comingSoon ? '<p class="modal-note">This app is marked coming soon. Downloads are disabled until its public launch.</p>' : app.private ? '<p class="modal-locked">This GitHub repository is private. Visitors need a public release download before this app can be installed from the website.</p>' :
+    var status = app.comingSoon ? '' : app.private ? '<p class="modal-locked">This GitHub repository is private. Visitors need a public release download before this app can be installed from the website.</p>' :
       app.sourceOnly ? '<p class="modal-locked">This project has public source code, but no verified standalone WebToApp download yet.</p>' : '';
     return '<div class="modal-icon"><span>' + escapeHTML(app.symbol) + '</span><img class="modal-icon-img" src="' + escapeHTML(app.icon) + '" alt=""></div>' +
       '<span class="modal-eyebrow">' + escapeHTML(app.label) + ' / AZ APPVERSE</span>' +
