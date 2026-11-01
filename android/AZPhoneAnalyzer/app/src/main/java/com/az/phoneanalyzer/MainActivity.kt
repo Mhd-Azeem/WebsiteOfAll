@@ -71,6 +71,9 @@ class MainActivity : Activity() {
             val results = JSONArray()
             val categories = linkedMapOf("images" to 0, "videos" to 0, "audio" to 0)
             val duplicates = mutableMapOf<String, MutableList<String>>()
+            val facesByUri = JSONObject()
+            var faceErrors = 0
+            val faceScanner = FaceScanner(this)
             val sources = listOf(
                 Triple("images", MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image"),
                 Triple("videos", MediaStore.Video.Media.EXTERNAL_CONTENT_URI, "video"),
@@ -109,23 +112,33 @@ class MainActivity : Activity() {
                                 item.put("sha256", hash)
                                 duplicates.getOrPut(hash) { mutableListOf() }.add(itemUri.toString())
                             } catch (_: Exception) { item.put("hashStatus", "unavailable"); errors++ }
+                            if (category == "images") {
+                                try {
+                                    val faces = faceScanner.countFaces(itemUri)
+                                    item.put("faceCount", faces)
+                                    if (faces > 0) facesByUri.put(itemUri.toString(), faces)
+                                } catch (_: Exception) { faceErrors++; item.put("faceStatus", "unavailable") }
+                            }
                             results.put(item)
                             categories[category] = categories.getValue(category) + 1
                         }
                     }
                 } catch (_: Exception) { errors++ }
             }
+            faceScanner.close()
             latest = JSONArray().put(JSONObject().put("generatedAt", System.currentTimeMillis())
                 .put("scope", "MediaStore accessible media only")
                 .put("counts", JSONObject(categories as Map<*, *>))
                 .put("readErrors", errors)
+                .put("faceErrors", faceErrors)
+                .put("photosWithFaces", facesByUri.length())
                 .put("duplicateGroups", JSONArray().apply {
                     duplicates.values.filter { it.size > 1 }.forEach { group ->
                         put(JSONArray(group))
                     }
                 }).put("files", results))
             runOnUiThread {
-                output.text = "Scan complete (accessible media only)\nImages: ${categories["images"]}\nVideos: ${categories["videos"]}\nAudio: ${categories["audio"]}\nDuplicate groups: ${duplicates.values.count { it.size > 1 }}\nRead errors: $errors\n\nNo files were modified."
+                output.text = "Scan complete (accessible media only)\nImages: ${categories["images"]}\nVideos: ${categories["videos"]}\nAudio: ${categories["audio"]}\nPhotos containing faces: ${facesByUri.length()}\\nFace scan errors: $faceErrors\\nDuplicate groups: ${duplicates.values.count { it.size > 1 }}\nRead errors: $errors\n\nNo files were modified."
                 export.isEnabled = true
             }
         }
