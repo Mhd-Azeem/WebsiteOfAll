@@ -18,3 +18,7 @@ android {
     }
     kotlinOptions { jvmTarget = "17" }
 }
+
+dependencies {
+    implementation("com.google.mlkit:face-detection:16.1.7")
+}
