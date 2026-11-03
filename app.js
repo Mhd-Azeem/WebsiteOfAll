@@ -76,6 +76,21 @@
       features: ['Colombo setting', '3D driving', 'Android release tracking', 'Windows release tracking']
     },
     {
+      id: 'motion', name: 'AZ Motion', repo: 'games', tone: 'purple',
+      symbol: 'AM', icon: './icons/az-motion.svg', label: 'CREATIVE', category: 'Motion wallpaper', filters: ['android', 'tools'],
+      releaseFilter: 'motion-v062',
+      short: 'Bring your wallpaper to life with motion and depth.',
+      description: 'AZ Motion is an experimental Android wallpaper application. This listing is pinned to the v0.6.2 test build rather than newer versions.',
+      features: ['Motion wallpaper', 'Depth effects', 'Android test build', 'Pinned v0.6.2 release']
+    },
+    {
+      id: 'photo-editor', name: 'AZ Photo Editor', repo: 'Photoeditor', tone: 'cyan',
+      symbol: 'PE', icon: './icons/az-photo-editor.svg', label: 'CREATIVE', category: 'Photo editing', filters: ['android', 'tools'],
+      short: 'Edit, refine and enhance your photos on Android.',
+      description: 'AZ Photo Editor provides Android photo editing tools. The download follows the latest available published APK release.',
+      features: ['Photo adjustments', 'Image editing', 'Gallery export', 'Latest APK release']
+    },
+    {
       id: 'jarvis', name: 'Jarvis', repo: 'Jarvis', tone: 'teal',
       symbol: 'J', icon: './icons/jarvis.svg', label: 'UTILITY', category: 'Productivity tool', filters: ['android', 'windows', 'tools'],
       short: 'A cross-device software experiment for smarter everyday workflows.',
@@ -244,6 +259,7 @@
   }
   function relevantRelease(app, release) {
     if (!release || release.draft || !release.assets || !release.assets.length) return false;
+    if (app.releaseFilter === 'motion-v062' && !(/(?:^|[^0-9])0\\.6\\.2(?:[^0-9]|$)/i.test(release.tag_name + ' ' + release.name) && /motion/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' ')))) return false;
     if (app.releaseFilter === 'akurana' && !(/akurana/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' ')) || (/car3d|az.car|azcar/i.test(release.tag_name + ' ' + release.name) && !/colombo/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' '))))) return false;
     if (app.releaseFilter === 'colombo' && !/colombo/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' '))) return false;
     if (app.releaseFilter === 'coast' && !/coast/i.test(release.tag_name + ' ' + release.name)) return false;
