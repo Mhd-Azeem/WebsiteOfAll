@@ -91,6 +91,21 @@
       features: ['Photo adjustments', 'Image editing', 'Gallery export', 'Latest APK release']
     },
     {
+      id: 'az-utility', name: 'AZ Utility', repo: 'AzUtility', tone: 'blue',
+      symbol: 'AU', icon: './icons/az-utility.svg', label: 'UTILITY', category: 'Device toolkit', filters: ['android', 'windows', 'tools'],
+      short: 'Three essential utilities in one powerful app.',
+      description: 'Offline-first toolkit combining AZ Network Analyzer, AZ Smart File Manager and AZ Device Doctor for Android and Windows.',
+      features: ['Network diagnostics', 'Smart file management', 'Device health insights', 'Android and Windows builds']
+    },
+    {
+      id: 'phone-analyzer', name: 'AZ Phone Analyzer', repo: 'WebsiteOfAll', tone: 'cyan',
+      symbol: 'PA', icon: './icons/az-phone-analyzer.svg', label: 'UTILITY', category: 'Storage analysis', filters: ['android', 'tools'],
+      releaseFilter: 'phone-analyzer',
+      short: 'Explore your phone storage, media and duplicate files.',
+      description: 'Android phone storage analysis with photo and video organization, duplicate detection and privacy-conscious local scanning.',
+      features: ['Storage overview', 'Photo and video analysis', 'Duplicate detection', 'Offline-first scanning']
+    },
+    {
       id: 'jarvis', name: 'Jarvis', repo: 'Jarvis', tone: 'teal',
       symbol: 'J', icon: './icons/jarvis.svg', label: 'UTILITY', category: 'Productivity tool', filters: ['android', 'windows', 'tools'],
       short: 'A cross-device software experiment for smarter everyday workflows.',
@@ -259,6 +274,7 @@
   }
   function relevantRelease(app, release) {
     if (!release || release.draft || !release.assets || !release.assets.length) return false;
+    if (app.releaseFilter === 'phone-analyzer' && !/phone[\\s._-]*analy[sz]er|az[\\s._-]*phone/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' '))) return false;
     if (app.releaseFilter === 'motion-v062' && !(/(?:^|[^0-9])0\\.6\\.2(?:[^0-9]|$)/i.test(release.tag_name + ' ' + release.name) && /motion/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' ')))) return false;
     if (app.releaseFilter === 'akurana' && !(/akurana/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' ')) || (/car3d|az.car|azcar/i.test(release.tag_name + ' ' + release.name) && !/colombo/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' '))))) return false;
     if (app.releaseFilter === 'colombo' && !/colombo/i.test(release.tag_name + ' ' + release.name + ' ' + release.assets.map(function(a){return a.name;}).join(' '))) return false;
